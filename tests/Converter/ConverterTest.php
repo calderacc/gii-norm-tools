@@ -18,10 +18,17 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
             ->loadXmlFile($filename)
             ->convert()
             ->getGesetz()
-            ->getParagraph('1');
+            ->getParagraph('1')
+        ;
 
-        $absatz1 = new Absatz('1', 'Die Teilnahme am Straßenverkehr erfordert ständige Vorsicht und gegenseitige Rücksicht.');
-        $absatz2 = new Absatz('2', 'Wer am Verkehr teilnimmt hat sich so zu verhalten, dass kein Anderer geschädigt, gefährdet oder mehr, als nach den Umständen unvermeidbar, behindert oder belästigt wird.');
+        $absatz1 = new Absatz(
+            '1',
+            'Die Teilnahme am Straßenverkehr erfordert ständige Vorsicht und gegenseitige Rücksicht.'
+        );
+        $absatz2 = new Absatz(
+            '2',
+            'Wer am Verkehr teilnimmt hat sich so zu verhalten, dass kein Anderer geschädigt, gefährdet oder mehr, als nach den Umständen unvermeidbar, behindert oder belästigt wird.'
+        );
 
         $expectedParagraph = new Paragraph();
         $expectedParagraph
