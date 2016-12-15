@@ -8,6 +8,7 @@ use Caldera\GiiNormTools\GesetzTree\Paragraph;
 
 class Converter
 {
+    /** @var \DOMDocument $xml */
     protected $xml;
 
     protected $gesetz;
@@ -19,16 +20,17 @@ class Converter
 
     public function loadXmlFile(string $filename): Converter
     {
-        $xmlFileContent = file_get_contents($filename);
-
-        $this->xml = new \SimpleXMLElement($xmlFileContent);
+        $this->xml = new \DOMDocument();
+        $this->xml->load($filename);
 
         return $this;
     }
 
     public function convert(): Converter
     {
-        foreach ($this->xml->norm as $norm) {
+        $normList = $this->xml->getElementsByTagName('norm');
+
+        foreach ($normList as $norm) {
             if ($this->isNormParagraph($norm)) {
                 $paragraph = $this->parseParagraph($norm);
 
@@ -44,43 +46,69 @@ class Converter
         return $this->gesetz;
     }
 
-    protected function parseParagraph(\SimpleXMLElement $norm): Paragraph
+    protected function parseParagraph(\DOMElement $norm): Paragraph
     {
+        $path = $norm->getNodePath().'/textdaten/text';
+
         $paragraph = new Paragraph();
 
         $paragraph->setNummer($this->getParagraphNummer($norm));
 
-        $texts = $norm->textdaten->text->Content->P;
+        $xpath = new \DOMXPath($this->xml);
 
-        foreach ($texts as $text) {
-            $absatz = new Absatz();
+        /** @var \DOMNodeList $nodeList */
+        $nodeList = $xpath->query($path);
 
-            preg_match('/\(([0-9a-zA-Z]*)\)\ (.*)/', $text, $matches);
+        if ($paragraph->getNummer() === '13') {
+            foreach ($nodeList as $node) {
+                var_dump($node);
+                $absatz = $this->parseAbsatz($p);
 
-            if (!$matches) {
-                continue;
+                $paragraph->addAbsatz($absatz);
             }
-
-            $absatz
-                ->setNummer($matches[1])
-                ->setTextString($matches[2])
-            ;
-
-
-            $paragraph->addAbsatz($absatz);
         }
 
         return $paragraph;
     }
 
-    protected function isNormParagraph(\SimpleXMLElement $norm): bool
+    protected function parseAbsatz(\SimpleXMLElement $p): Absatz
     {
-        return strpos($norm->metadaten->enbez, '§') !== false;
+        $absatz = new Absatz();
+
+        preg_match('/\(([0-9a-zA-Z]*)\)\ (.*)/', $p, $matches);
+
+        $absatz
+            ->setNummer($matches[1])
+            ->setTextString($matches[2])
+        ;
+
+        return $absatz;
     }
 
-    protected function getParagraphNummer(\SimpleXMLElement $norm): string
+    protected function isNormParagraph(\DOMElement $norm): bool
     {
-        preg_match('/§ (.*)/', $norm->metadaten->enbez, $matches);
+        $path = $norm->getNodePath().'/metadaten/enbez';
+
+        $xpath = new \DOMXPath($this->xml);
+
+        /** @var \DOMNodeList $nodeList */
+        $nodeList = $xpath->query($path);
+
+        return $nodeList->length !== 0;
+    }
+
+    protected function getParagraphNummer(\DOMElement $norm): string
+    {
+        $path = $norm->getNodePath().'/metadaten/enbez';
+
+        $xpath = new \DOMXPath($this->xml);
+
+        /** @var \DOMNodeList $nodeList */
+        $nodeList = $xpath->query($path);
+
+        $enbez = $nodeList->item(0)->nodeValue;
+
+        preg_match('/§ (.*)/', $enbez, $matches);
 
         return $matches[1];
     }
