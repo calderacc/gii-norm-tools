@@ -14,7 +14,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Caldera\\GiiNormTools\\": "src/"
+            "Caldera\\GiiNormTools\\": "src/",
+            "Caldera\\GiiNormTools\\Tests": "tests/"
         }
     }
 }
