@@ -6,13 +6,15 @@ class Absatz
 {
     protected $nummer;
 
-    protected $text;
+    protected $contentList = [];
 
     public function __construct(string $nummer = null, string $text = null)
     {
         $this->nummer = $nummer;
 
-        $this->text = $text;
+        if ($text) {
+            $this->contentList[] = new AbsatzText($text);
+        }
     }
 
     public function setNummer(string $nummer): Absatz
@@ -29,13 +31,16 @@ class Absatz
 
     public function setText(string $text): Absatz
     {
-        $this->text = $text;
+        $this->contentList[] = new AbsatzText($text);
 
         return $this;
     }
 
     public function getText(): ?string
     {
-        return $this->text;
+        /** @var AbsatzText $text */
+        $text = array_pop($this->contentList);
+
+        return $text->getText();
     }
 }
