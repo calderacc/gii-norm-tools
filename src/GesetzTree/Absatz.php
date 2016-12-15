@@ -8,9 +8,11 @@ class Absatz
 
     protected $text;
 
-    public function __construct()
+    public function __construct(string $nummer = null, string $text = null)
     {
+        $this->nummer = $nummer;
 
+        $this->text = $text;
     }
 
     public function setNummer(string $nummer): Absatz
