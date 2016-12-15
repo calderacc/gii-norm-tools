@@ -6,7 +6,6 @@ class Paragraph
 {
     protected $nummer;
 
-    protected $text;
 
     public function __construct()
     {
