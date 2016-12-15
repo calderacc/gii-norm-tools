@@ -22,7 +22,7 @@ class Absatz
         return $this;
     }
 
-    public function getNummer(): string
+    public function getNummer(): ?string
     {
         return $this->nummer;
     }
@@ -34,7 +34,7 @@ class Absatz
         return $this;
     }
 
-    public function getText(): string
+    public function getText(): ?string
     {
         return $this->text;
     }
