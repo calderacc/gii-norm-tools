@@ -36,4 +36,9 @@ class Paragraph
     {
         return $this->absatzList;
     }
+
+    public function getAbsatz(string $nummer): Absatz
+    {
+        return $this->absatzList[$nummer];
+    }
 }
