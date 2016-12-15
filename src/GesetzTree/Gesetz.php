@@ -17,4 +17,14 @@ class Gesetz
 
         return $this;
     }
+
+    public function getParagraphList(): array
+    {
+        return $this->paragraphList;
+    }
+
+    public function getParagraph(string $paragraphNummer): Paragraph
+    {
+        return $this->paragraphList[$paragraphNummer];
+    }
 }
