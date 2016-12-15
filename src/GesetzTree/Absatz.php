@@ -29,14 +29,14 @@ class Absatz
         return $this->nummer;
     }
 
-    public function setText(string $text): Absatz
+    public function setTextString(string $text): Absatz
     {
         $this->contentList[] = new AbsatzText($text);
 
         return $this;
     }
 
-    public function getText(): ?string
+    public function getTextString(): ?string
     {
         /** @var AbsatzText $text */
         $text = array_pop($this->contentList);

@@ -47,7 +47,7 @@ class Converter
 
                     $absatz
                         ->setNummer($matches[1])
-                        ->setText($matches[2])
+                        ->setTextString($matches[2])
                     ;
 
 
