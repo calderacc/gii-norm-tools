@@ -26,7 +26,7 @@ class Converter
         return $this;
     }
 
-    public function convert()
+    public function convert(): Converter
     {
         foreach ($this->xml->norm as $norm) {
             if (strpos($norm->metadaten->enbez, '§') !== false) {
@@ -59,6 +59,8 @@ class Converter
                 $this->gesetz->addParagraph($paragraph);
             }
         }
+
+        return $this;
     }
 
     public function getGesetz(): Gesetz
