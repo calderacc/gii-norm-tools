@@ -45,4 +45,23 @@ class Absatz
 
         return $text->getText();
     }
+
+    public function getContentList(): array
+    {
+        return $this->contentList;
+    }
+
+    public function addText(AbsatzText $absatzText): Absatz
+    {
+        array_push($this->contentList, $absatzText);
+
+        return $this;
+    }
+
+    public function addListItem(AbsatzListItem $absatzListItem): Absatz
+    {
+        array_push($this->contentList, $absatzListItem);
+
+        return $this;
+    }
 }
