@@ -30,29 +30,7 @@ class Converter
     {
         foreach ($this->xml->norm as $norm) {
             if ($this->isNormParagraph($norm)) {
-                $paragraph = new Paragraph();
-
-                $paragraph->setNummer($this->getParagraphNummer($norm));
-
-                $texts = $norm->textdaten->text->Content->P;
-
-                foreach ($texts as $text) {
-                    $absatz = new Absatz();
-
-                    preg_match('/\(([0-9a-zA-Z]*)\)\ (.*)/', $text, $matches);
-
-                    if (!$matches) {
-                        continue;
-                    }
-
-                    $absatz
-                        ->setNummer($matches[1])
-                        ->setTextString($matches[2])
-                    ;
-
-
-                    $paragraph->addAbsatz($absatz);
-                }
+                $paragraph = $this->parseParagraph($norm);
 
                 $this->gesetz->addParagraph($paragraph);
             }
@@ -64,6 +42,35 @@ class Converter
     public function getGesetz(): Gesetz
     {
         return $this->gesetz;
+    }
+
+    protected function parseParagraph(\SimpleXMLElement $norm): Paragraph
+    {
+        $paragraph = new Paragraph();
+
+        $paragraph->setNummer($this->getParagraphNummer($norm));
+
+        $texts = $norm->textdaten->text->Content->P;
+
+        foreach ($texts as $text) {
+            $absatz = new Absatz();
+
+            preg_match('/\(([0-9a-zA-Z]*)\)\ (.*)/', $text, $matches);
+
+            if (!$matches) {
+                continue;
+            }
+
+            $absatz
+                ->setNummer($matches[1])
+                ->setTextString($matches[2])
+            ;
+
+
+            $paragraph->addAbsatz($absatz);
+        }
+
+        return $paragraph;
     }
 
     protected function isNormParagraph(\SimpleXMLElement $norm): bool
