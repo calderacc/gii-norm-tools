@@ -29,7 +29,7 @@ class Converter
     public function convert(): Converter
     {
         foreach ($this->xml->norm as $norm) {
-            if (strpos($norm->metadaten->enbez, '§') !== false) {
+            if ($this->isNormParagraph($norm)) {
                 $paragraph = new Paragraph();
 
                 preg_match('/§ (.*)/', $norm->metadaten->enbez, $matches);
@@ -66,5 +66,10 @@ class Converter
     public function getGesetz(): Gesetz
     {
         return $this->gesetz;
+    }
+
+    protected function isNormParagraph(\SimpleXMLElement $norm): bool
+    {
+        return strpos($norm->metadaten->enbez, '§') !== false;
     }
 }
