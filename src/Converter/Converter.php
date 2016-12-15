@@ -60,4 +60,9 @@ class Converter
             }
         }
     }
+
+    public function getGesetz(): Gesetz
+    {
+        return $this->gesetz;
+    }
 }
