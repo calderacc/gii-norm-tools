@@ -32,9 +32,7 @@ class Converter
             if ($this->isNormParagraph($norm)) {
                 $paragraph = new Paragraph();
 
-                preg_match('/§ (.*)/', $norm->metadaten->enbez, $matches);
-
-                $paragraph->setNummer($matches[1]);
+                $paragraph->setNummer($this->getParagraphNummer($norm));
 
                 $texts = $norm->textdaten->text->Content->P;
 
@@ -71,5 +69,12 @@ class Converter
     protected function isNormParagraph(\SimpleXMLElement $norm): bool
     {
         return strpos($norm->metadaten->enbez, '§') !== false;
+    }
+
+    protected function getParagraphNummer(\SimpleXMLElement $norm): string
+    {
+        preg_match('/§ (.*)/', $norm->metadaten->enbez, $matches);
+
+        return $matches[1];
     }
 }
