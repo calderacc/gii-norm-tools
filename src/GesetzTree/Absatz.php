@@ -31,6 +31,8 @@ class Absatz
 
     public function setTextString(string $text): Absatz
     {
+        $this->contentList = [];
+
         $this->contentList[] = new AbsatzText($text);
 
         return $this;
