@@ -6,6 +6,8 @@ class Paragraph
 {
     protected $nummer;
 
+    protected $titel;
+
     protected $absatzList = [];
 
     public function __construct()
@@ -23,6 +25,18 @@ class Paragraph
     public function getNummer(): string
     {
         return $this->nummer;
+    }
+
+    public function setTitel(string $titel): Paragraph
+    {
+        $this->titel = $titel;
+
+        return $this;
+    }
+
+    public function getTitel(): string
+    {
+        return $this->titel;
     }
 
     public function addAbsatz(Absatz $absatz): Paragraph
