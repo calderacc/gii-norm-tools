@@ -60,6 +60,10 @@ class Parser implements ParserInterface
             ->setTitel($this->getParagraphTitel($norm))
         ;
 
+        if ($paragraph->getNummer() != '3') {
+            return $paragraph;
+        }
+
         $xpath = new \DOMXPath($this->xml);
 
         /** @var \DOMNodeList $nodeList */
@@ -88,18 +92,41 @@ class Parser implements ParserInterface
             }
 
             if ($childNode->nodeName === 'DD') {
-                $absatzListItem = new ListItem();
-
-                $absatzListItem
-                    ->setNummer($listItemNummer)
-                    ->setText($childNode->nodeValue)
-                ;
+                $absatzListItem = $this->parseListItem($listItemNummer, $childNode);
 
                 $absatzList->addListItem($absatzListItem);
             }
         }
 
         return $absatzList;
+    }
+
+    protected function parseListItem(string $listItemNummer, \DOMElement $node)
+    {
+        $absatzListItem = new ListItem();
+
+
+        for ($i = 0; $i < $node->childNodes->length; ++$i) {
+            $foo = $node->childNodes->item($i);
+
+            var_dump($foo->childNodes->item(0));
+        }
+
+
+        /*
+        if ($node->childNodes->length === 1) {
+            $absatzListItem
+                ->setNummer($listItemNummer)
+                ->setText($node->nodeValue)
+            ;
+        } else {
+            $list = new ItemList();
+
+
+
+        }*/
+
+        return $absatzListItem;
     }
 
     protected function parseAbsatz(\DOMNode $node): Absatz
