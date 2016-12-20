@@ -64,26 +64,7 @@ class Converter
 
         /** @var \DOMNode $node */
         foreach ($nodeList as $node) {
-            $absatz = new Absatz();
-
-            for ($i = 0; $i < $node->childNodes->length; ++$i) {
-                $subItem = $node->childNodes->item($i);
-
-                if ($subItem->nodeName === '#text') {
-                    $absatzText = new AbsatzText();
-
-                    $absatzText->setText($subItem->nodeValue);
-
-                    $absatz->addText($absatzText);
-
-                }
-
-                if ($subItem->nodeName === 'DL') {
-                    $absatzList = $this->parseList($subItem);
-
-                    $absatz->addList($absatzList);
-                }
-            }
+            $absatz = $this->parseAbsatz($node);
 
             $paragraph->addAbsatz($absatz);
         }
@@ -118,8 +99,11 @@ class Converter
         return $absatzList;
     }
 
-    protected function parseAbsatz(\SimpleXMLElement $p): Absatz
+    protected function parseAbsatz(\DOMElement $node): Absatz
     {
+        $absatz = new Absatz();
+
+        /*
         $absatz = new Absatz();
 
         preg_match('/\(([0-9a-zA-Z]*)\)\ (.*)/', $p, $matches);
@@ -128,6 +112,27 @@ class Converter
             ->setNummer($matches[1])
             ->setTextString($matches[2])
         ;
+
+        return $absatz;
+*/
+        for ($i = 0; $i < $node->childNodes->length; ++$i) {
+            $subItem = $node->childNodes->item($i);
+
+            if ($subItem->nodeName === '#text') {
+                $absatzText = new AbsatzText();
+
+                $absatzText->setText($subItem->nodeValue);
+
+                $absatz->addText($absatzText);
+
+            }
+
+            if ($subItem->nodeName === 'DL') {
+                $absatzList = $this->parseList($subItem);
+
+                $absatz->addList($absatzList);
+            }
+        }
 
         return $absatz;
     }
