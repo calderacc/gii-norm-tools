@@ -2,7 +2,7 @@
 
 namespace Caldera\GiiNormTools\GesetzTree;
 
-class AbsatzList
+class ItemList
 {
     protected $items = [];
 
@@ -11,7 +11,7 @@ class AbsatzList
 
     }
 
-    public function addListItem(AbsatzListItem $item): AbsatzList
+    public function addListItem(AbsatzListItem $item): ItemList
     {
         $this->items[] = $item;
 
