@@ -11,7 +11,7 @@ class ItemList
 
     }
 
-    public function addListItem(AbsatzListItem $item): ItemList
+    public function addListItem(ListItem $item): ItemList
     {
         $this->items[] = $item;
 

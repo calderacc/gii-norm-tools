@@ -2,7 +2,7 @@
 
 namespace Caldera\GiiNormTools\GesetzTree;
 
-class AbsatzListItem
+class ListItem
 {
     protected $nummer;
 
@@ -15,7 +15,7 @@ class AbsatzListItem
         $this->text = $text;
     }
 
-    public function setNummer(string $nummer): AbsatzListItem
+    public function setNummer(string $nummer): ListItem
     {
         $this->nummer = $nummer;
 
@@ -27,7 +27,7 @@ class AbsatzListItem
         return $this->nummer;
     }
 
-    public function setText(string $text): AbsatzListItem
+    public function setText(string $text): ListItem
     {
         $this->text = $text;
 

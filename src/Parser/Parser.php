@@ -3,9 +3,9 @@
 namespace Caldera\GiiNormTools\Parser;
 
 use Caldera\GiiNormTools\GesetzTree\Absatz;
-use Caldera\GiiNormTools\GesetzTree\AbsatzListItem;
 use Caldera\GiiNormTools\GesetzTree\Gesetz;
 use Caldera\GiiNormTools\GesetzTree\ItemList;
+use Caldera\GiiNormTools\GesetzTree\ListItem;
 use Caldera\GiiNormTools\GesetzTree\Paragraph;
 use Caldera\GiiNormTools\GesetzTree\Text;
 
@@ -88,7 +88,7 @@ class Parser implements ParserInterface
             }
 
             if ($childNode->nodeName === 'DD') {
-                $absatzListItem = new AbsatzListItem();
+                $absatzListItem = new ListItem();
 
                 $absatzListItem
                     ->setNummer($listItemNummer)
