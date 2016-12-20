@@ -139,7 +139,11 @@ class Converter
         /** @var \DOMNodeList $nodeList */
         $nodeList = $xpath->query($path);
 
-        return $nodeList->length !== 0;
+        if ($nodeList->length !== 0 && $nodeList->item(0)->nodeValue[0] === '§') {
+            return true;
+        }
+
+        return false;
     }
 
     protected function getParagraphNummer(\DOMElement $norm): string
