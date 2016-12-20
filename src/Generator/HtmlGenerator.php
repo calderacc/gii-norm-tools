@@ -35,6 +35,6 @@ class HtmlGenerator
 
     protected function generateParagraph(Paragraph $paragraph): string
     {
-        return '<li>§ '.$paragraph->getNummer().'</li>';
+        return '<li>§ '.$paragraph->getNummer().': '.$paragraph->getTitel().'</li>';
     }
 }
