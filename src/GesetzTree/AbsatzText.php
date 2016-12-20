@@ -8,7 +8,7 @@ class AbsatzText
 
     public function __construct(string $text = null)
     {
-        $this->text;
+        $this->text = $text;
     }
 
     public function setText(string $text): AbsatzText
