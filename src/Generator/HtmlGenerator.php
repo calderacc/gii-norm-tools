@@ -88,7 +88,7 @@ class HtmlGenerator
 
         /** @var AbsatzListItem $absatzListItem */
         foreach ($absatzList->getItems() as $absatzListItem) {
-            $html .= $absatzListItem->getText();
+            $html .= '<li>' . $absatzListItem->getText() . '</li>';
         }
 
         $html .= '</ul>';
