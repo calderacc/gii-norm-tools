@@ -1,6 +1,6 @@
 <?php
 
-namespace Caldera\GiiNormTools\Converter;
+namespace Caldera\GiiNormTools\Parser;
 
 use Caldera\GiiNormTools\GesetzTree\Gesetz;
 
