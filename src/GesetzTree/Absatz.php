@@ -58,9 +58,9 @@ class Absatz
         return $this;
     }
 
-    public function addListItem(AbsatzListItem $absatzListItem): Absatz
+    public function addList(AbsatzList $absatzList): Absatz
     {
-        array_push($this->contentList, $absatzListItem);
+        array_push($this->contentList, $absatzList);
 
         return $this;
     }
