@@ -3,6 +3,9 @@
 namespace Caldera\GiiNormTools\Converter;
 
 use Caldera\GiiNormTools\GesetzTree\Absatz;
+use Caldera\GiiNormTools\GesetzTree\AbsatzList;
+use Caldera\GiiNormTools\GesetzTree\AbsatzListItem;
+use Caldera\GiiNormTools\GesetzTree\AbsatzText;
 use Caldera\GiiNormTools\GesetzTree\Gesetz;
 use Caldera\GiiNormTools\GesetzTree\Paragraph;
 
@@ -48,27 +51,69 @@ class Converter
 
     protected function parseParagraph(\DOMElement $norm): Paragraph
     {
-        $path = $norm->getNodePath().'/textdaten/text';
+        $path = $norm->getNodePath().'/textdaten/text/Content/P';
 
         $paragraph = new Paragraph();
 
-        $paragraph->setNummer($this->getParagraphNummer($norm));
-
+        //$paragraph->setNummer($this->getParagraphNummer($norm));
+        $paragraph->setNummer(8);
         $xpath = new \DOMXPath($this->xml);
 
         /** @var \DOMNodeList $nodeList */
         $nodeList = $xpath->query($path);
 
-        if ($paragraph->getNummer() === '13') {
+        if ($paragraph->getNummer() === '8') {
+            /** @var \DOMNode $node */
             foreach ($nodeList as $node) {
-                var_dump($node);
-                $absatz = $this->parseAbsatz($p);
+                for ($i = 0; $i < $node->childNodes->length; ++$i) {
+                    $subItem = $node->childNodes->item($i);
 
-                $paragraph->addAbsatz($absatz);
+                    if ($subItem->nodeName === '#text') {
+                        $absatzSubItem = new AbsatzText();
+
+                        $absatzSubItem->setText($subItem->nodeValue);
+                    }
+
+                    if ($subItem->nodeName === 'DL') {
+                        $this->parseList($subItem);
+                    }
+                }
+
+                //$absatz = $this->parseAbsatz($p);
+
+                //$paragraph->addAbsatz($absatz);
             }
+
         }
 
         return $paragraph;
+    }
+
+    protected function parseList(\DOMElement $node): AbsatzList
+    {
+        $absatzList = new AbsatzList();
+        $listItemNummer = null;
+
+        for ($i = 0; $i < $node->childNodes->length; ++$i) {
+            $childNode = $node->childNodes->item($i);
+
+            if ($childNode->nodeName === 'DT') {
+                $listItemNummer = $childNode->nodeValue;
+            }
+
+            if ($childNode->nodeName === 'DD') {
+                $absatzListItem = new AbsatzListItem();
+
+                $absatzListItem
+                    ->setNummer($listItemNummer)
+                    ->setText($childNode->nodeValue)
+                ;
+
+                $absatzList->addListItem($absatzListItem);
+            }
+        }
+
+        return $absatzList;
     }
 
     protected function parseAbsatz(\SimpleXMLElement $p): Absatz
