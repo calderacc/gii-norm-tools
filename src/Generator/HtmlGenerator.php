@@ -3,6 +3,9 @@
 namespace Caldera\GiiNormTools\Generator;
 
 use Caldera\GiiNormTools\GesetzTree\Absatz;
+use Caldera\GiiNormTools\GesetzTree\AbsatzList;
+use Caldera\GiiNormTools\GesetzTree\AbsatzListItem;
+use Caldera\GiiNormTools\GesetzTree\AbsatzText;
 use Caldera\GiiNormTools\GesetzTree\Gesetz;
 use Caldera\GiiNormTools\GesetzTree\Paragraph;
 
@@ -64,6 +67,32 @@ class HtmlGenerator
 
     protected function generateAbsatz(Absatz $absatz): string
     {
-        return 'foo';
+        $html = '';
+
+        foreach ($absatz->getContentList() as $absatzItem) {
+            if ($absatzItem instanceof AbsatzText) {
+                $html .= '<p>'.$absatzItem->getText().'</p>';
+            }
+
+            if ($absatzItem instanceof AbsatzList) {
+                $html .= $this->generateAbsatzList($absatzItem);
+            }
+        }
+
+        return $html;
+    }
+
+    protected function generateAbsatzList(AbsatzList $absatzList): string
+    {
+        $html = '<ul>';
+
+        /** @var AbsatzListItem $absatzListItem */
+        foreach ($absatzList->getItems() as $absatzListItem) {
+            $html .= $absatzListItem->getText();
+        }
+
+        $html .= '</ul>';
+
+        return $html;
     }
 }
