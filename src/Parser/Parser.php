@@ -9,7 +9,7 @@ use Caldera\GiiNormTools\GesetzTree\AbsatzText;
 use Caldera\GiiNormTools\GesetzTree\Gesetz;
 use Caldera\GiiNormTools\GesetzTree\Paragraph;
 
-class Converter
+class Parser
 {
     /** @var \DOMDocument $xml */
     protected $xml;
@@ -21,7 +21,7 @@ class Converter
         $this->gesetz = new Gesetz();
     }
 
-    public function loadXmlFile(string $filename): Converter
+    public function loadXmlFile(string $filename): Parser
     {
         $this->xml = new \DOMDocument();
         $this->xml->load($filename);
@@ -29,7 +29,7 @@ class Converter
         return $this;
     }
 
-    public function convert(): Converter
+    public function parse(): Parser
     {
         $normList = $this->xml->getElementsByTagName('norm');
 
