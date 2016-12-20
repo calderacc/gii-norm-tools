@@ -67,17 +67,19 @@ class HtmlGenerator
 
     protected function generateAbsatz(Absatz $absatz): string
     {
-        $html = '';
+        $html = '<p>(' . $absatz->getNummer() . ') ';
 
         foreach ($absatz->getContentList() as $absatzItem) {
             if ($absatzItem instanceof AbsatzText) {
-                $html .= '<p>'.$absatzItem->getText().'</p>';
+                $html .= $absatzItem->getText();
             }
 
             if ($absatzItem instanceof AbsatzList) {
                 $html .= $this->generateAbsatzList($absatzItem);
             }
         }
+
+        $html .= '</p>';
 
         return $html;
     }
