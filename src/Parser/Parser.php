@@ -117,10 +117,9 @@ class Parser implements ParserInterface
                 if ($subItem->nodeName === '#text') {
                     $absatzText = new AbsatzText();
 
-                    $absatzText->setText($matches[2]);
+                    $absatzText->setText($subItem->nodeValue);
 
                     $absatz->addText($absatzText);
-
                 }
 
                 if ($subItem->nodeName === 'DL') {
