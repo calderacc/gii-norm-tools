@@ -55,35 +55,37 @@ class Converter
 
         $paragraph = new Paragraph();
 
-        //$paragraph->setNummer($this->getParagraphNummer($norm));
-        $paragraph->setNummer(8);
+        $paragraph->setNummer($this->getParagraphNummer($norm));
+
         $xpath = new \DOMXPath($this->xml);
 
         /** @var \DOMNodeList $nodeList */
         $nodeList = $xpath->query($path);
 
-        if ($paragraph->getNummer() === '8') {
-            /** @var \DOMNode $node */
-            foreach ($nodeList as $node) {
-                for ($i = 0; $i < $node->childNodes->length; ++$i) {
-                    $subItem = $node->childNodes->item($i);
+        /** @var \DOMNode $node */
+        foreach ($nodeList as $node) {
+            $absatz = new Absatz();
 
-                    if ($subItem->nodeName === '#text') {
-                        $absatzSubItem = new AbsatzText();
+            for ($i = 0; $i < $node->childNodes->length; ++$i) {
+                $subItem = $node->childNodes->item($i);
 
-                        $absatzSubItem->setText($subItem->nodeValue);
-                    }
+                if ($subItem->nodeName === '#text') {
+                    $absatzText = new AbsatzText();
 
-                    if ($subItem->nodeName === 'DL') {
-                        $this->parseList($subItem);
-                    }
+                    $absatzText->setText($subItem->nodeValue);
+
+                    $absatz->addText($absatzText);
+
                 }
 
-                //$absatz = $this->parseAbsatz($p);
+                if ($subItem->nodeName === 'DL') {
+                    $absatzList = $this->parseList($subItem);
 
-                //$paragraph->addAbsatz($absatz);
+                    $absatz->addList($absatzList);
+                }
             }
 
+            $paragraph->addAbsatz($absatz);
         }
 
         return $paragraph;
@@ -139,7 +141,7 @@ class Converter
         /** @var \DOMNodeList $nodeList */
         $nodeList = $xpath->query($path);
 
-        if ($nodeList->length !== 0 && $nodeList->item(0)->nodeValue[0] === '§') {
+        if ($nodeList->length !== 0 && strpos($nodeList->item(0)->nodeValue, '§') === 0) {
             return true;
         }
 
