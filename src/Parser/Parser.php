@@ -55,7 +55,10 @@ class Parser implements ParserInterface
 
         $paragraph = new Paragraph();
 
-        $paragraph->setNummer($this->getParagraphNummer($norm));
+        $paragraph
+            ->setNummer($this->getParagraphNummer($norm))
+            ->setTitel($this->getParagraphTitel($norm))
+        ;
 
         $xpath = new \DOMXPath($this->xml);
 
@@ -163,5 +166,19 @@ class Parser implements ParserInterface
         preg_match('/§ (.*)/', $enbez, $matches);
 
         return $matches[1];
+    }
+
+    protected function getParagraphTitel(\DOMElement $norm): string
+    {
+        $path = $norm->getNodePath().'/metadaten/titel';
+
+        $xpath = new \DOMXPath($this->xml);
+
+        /** @var \DOMNodeList $nodeList */
+        $nodeList = $xpath->query($path);
+
+        $titel = $nodeList->item(0)->nodeValue;
+
+        return $titel;
     }
 }
