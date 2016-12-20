@@ -5,9 +5,9 @@ namespace Caldera\GiiNormTools\Generator;
 use Caldera\GiiNormTools\GesetzTree\Absatz;
 use Caldera\GiiNormTools\GesetzTree\AbsatzList;
 use Caldera\GiiNormTools\GesetzTree\AbsatzListItem;
-use Caldera\GiiNormTools\GesetzTree\AbsatzText;
 use Caldera\GiiNormTools\GesetzTree\Gesetz;
 use Caldera\GiiNormTools\GesetzTree\Paragraph;
+use Caldera\GiiNormTools\GesetzTree\Text;
 
 class HtmlGenerator
 {
@@ -70,7 +70,7 @@ class HtmlGenerator
         $html = '<p>(' . $absatz->getNummer() . ') ';
 
         foreach ($absatz->getContentList() as $absatzItem) {
-            if ($absatzItem instanceof AbsatzText) {
+            if ($absatzItem instanceof Text) {
                 $html .= $absatzItem->getText();
             }
 

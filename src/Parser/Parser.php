@@ -5,9 +5,9 @@ namespace Caldera\GiiNormTools\Parser;
 use Caldera\GiiNormTools\GesetzTree\Absatz;
 use Caldera\GiiNormTools\GesetzTree\AbsatzList;
 use Caldera\GiiNormTools\GesetzTree\AbsatzListItem;
-use Caldera\GiiNormTools\GesetzTree\AbsatzText;
 use Caldera\GiiNormTools\GesetzTree\Gesetz;
 use Caldera\GiiNormTools\GesetzTree\Paragraph;
+use Caldera\GiiNormTools\GesetzTree\Text;
 
 class Parser implements ParserInterface
 {
@@ -115,7 +115,7 @@ class Parser implements ParserInterface
                 $subItem = $node->childNodes->item($i);
 
                 if ($subItem->nodeName === '#text') {
-                    $absatzText = new AbsatzText();
+                    $absatzText = new Text();
 
                     $string = $subItem->nodeValue;
                     $string = str_replace('('.$matches[1].') ', '', $string);

@@ -2,7 +2,7 @@
 
 namespace Caldera\GiiNormTools\GesetzTree;
 
-class AbsatzText
+class Text
 {
     protected $text;
 
@@ -11,7 +11,7 @@ class AbsatzText
         $this->text = $text;
     }
 
-    public function setText(string $text): AbsatzText
+    public function setText(string $text): Text
     {
         $this->text = $text;
 

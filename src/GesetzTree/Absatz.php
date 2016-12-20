@@ -13,7 +13,7 @@ class Absatz
         $this->nummer = $nummer;
 
         if ($text) {
-            $this->contentList[] = new AbsatzText($text);
+            $this->contentList[] = new Text($text);
         }
     }
 
@@ -33,14 +33,14 @@ class Absatz
     {
         $this->contentList = [];
 
-        $this->contentList[] = new AbsatzText($text);
+        $this->contentList[] = new Text($text);
 
         return $this;
     }
 
     public function getTextString(): ?string
     {
-        /** @var AbsatzText $text */
+        /** @var Text $text */
         $text = array_pop($this->contentList);
 
         return $text->getText();
@@ -51,7 +51,7 @@ class Absatz
         return $this->contentList;
     }
 
-    public function addText(AbsatzText $absatzText): Absatz
+    public function addText(Text $absatzText): Absatz
     {
         array_push($this->contentList, $absatzText);
 
