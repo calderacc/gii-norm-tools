@@ -6,7 +6,7 @@ class ListItem
 {
     protected $nummer;
 
-    protected $text;
+    protected $contentList = [];
 
     public function __construct(string $nummer = null, string $text = null)
     {
@@ -27,15 +27,43 @@ class ListItem
         return $this->nummer;
     }
 
-    public function setText(string $text): ListItem
+    public function setTextString(string $text): ListItem
     {
-        $this->text = $text;
+        $this->contentList = [];
+
+        $this->contentList[] = new Text($text);
 
         return $this;
     }
 
-    public function getText(): ?string
+    public function getTextString(): ?string
     {
-        return $this->text;
+        /** @var Text $text */
+        $text = array_pop($this->contentList);
+
+        if ($text instanceof Text) {
+            return $text->getText();
+        }
+
+        return 'foo';
+    }
+
+    public function getContentList(): array
+    {
+        return $this->contentList;
+    }
+
+    public function addText(Text $absatzText): ListItem
+    {
+        array_push($this->contentList, $absatzText);
+
+        return $this;
+    }
+
+    public function addList(ItemList $absatzList): ListItem
+    {
+        array_push($this->contentList, $absatzList);
+
+        return $this;
     }
 }
