@@ -92,7 +92,7 @@ class HtmlGenerator
         foreach ($absatzList->getItems() as $absatzListItem) {
             $html .= '<li>';
             $html .= $absatzListItem->getNummer() . ' ';
-            $html .= $absatzListItem->getText();
+            $html .= $absatzListItem->getTextString();
             $html .= '</li>';
         }
 

@@ -99,11 +99,11 @@ class Parser implements ParserInterface
                     $absatz->addText($absatzText);
                 }
 
-                /*if ($subItem->nodeName === 'DL') {
-                    $absatzList = $this->parseList($subItem);
+                if ($childNode->nodeName === 'DL') {
+                    $absatzList = $this->parseList($childNode);
 
                     $absatz->addList($absatzList);
-                }*/
+                }
             }
         } else {
             $absatz->setTextString($node->nodeValue);
@@ -111,7 +111,7 @@ class Parser implements ParserInterface
 
         return $absatz;
     }
-/*
+
     protected function parseList(\DOMElement $node): ItemList
     {
         $absatzList = new ItemList();
@@ -134,17 +134,55 @@ class Parser implements ParserInterface
         return $absatzList;
     }
 
-    protected function parseListItem(string $listItemNummer, \DOMElement $node)
+    protected function parseSublist(\DOMElement $node)
     {
-        $absatzListItem = new ListItem();
-
-
-        for ($i = 0; $i < $node->childNodes->length; ++$i) {
-            $foo = $node->childNodes->item($i);
-
-            var_dump($foo->childNodes->item(0));
+        foreach ($node->childNodes as $childNode) {
+            var_dump($childNode);
         }
 
+    }
+
+    protected function parseListItem(string $listItemNummer, \DOMElement $node)
+    {
+        $listItem = new ListItem();
+
+        foreach ($node->childNodes as $childNode) {
+            if ($childNode->nodeName === '#text') {
+                $text = new Text();
+                $text->setText($childNode->childNodes->item(0));
+
+                $listItem->addText($text);
+            }
+
+            if ($childNode->nodeName === 'LA') {
+                $this->parseSublist($childNode);
+            }
+        }
+        /*
+        for ($i = 0; $i < $node->childNodes->length; ++$i) {
+            $itemNode = $node->childNodes->item($i);
+
+            if ($itemNode->hasChildNodes()) {
+                for ($i = 0; $i < $itemNode->childNodes->length; ++$i) {
+                    $subItem = $itemNode->childNodes->item($i);
+
+                    if ($subItem instanceof \DOMText) {
+                        $text = new Text();
+                        $text->setText($subItem->nodeValue);
+
+                        $listItem->addText($text);
+                    } else {
+                        //$this->parseList($subItem);
+                    }
+                }
+            } else {
+                $text = new Text();
+                $text->setText($itemNode->childNodes->item(0)->nodeValue);
+
+                $listItem->addText($text);
+            }
+        }
+*/
 
         /*
         if ($node->childNodes->length === 1) {
@@ -159,42 +197,7 @@ class Parser implements ParserInterface
 
         }*/
 
-        return $absatzListItem;
-    }
-
-    protected function parseAbsatz(\DOMNode $node): Absatz
-    {
-        $absatz = new Absatz();
-
-        preg_match('/\(([0-9a-zA-Z]*)\)\ (.*)/', $node->nodeValue, $matches);
-
-        if (count($matches) === 3) {
-            $absatz->setNummer($matches[1]);
-
-            for ($i = 0; $i < $node->childNodes->length; ++$i) {
-                $subItem = $node->childNodes->item($i);
-
-                if ($subItem->nodeName === '#text') {
-                    $absatzText = new Text();
-
-                    $string = $subItem->nodeValue;
-                    $string = str_replace('('.$matches[1].') ', '', $string);
-                    $absatzText->setText($string);
-
-                    $absatz->addText($absatzText);
-                }
-
-                if ($subItem->nodeName === 'DL') {
-                    $absatzList = $this->parseList($subItem);
-
-                    $absatz->addList($absatzList);
-                }
-            }
-        } else {
-            $absatz->setTextString($node->nodeValue);
-        }
-
-        return $absatz;
+        return $listItem;
     }
 
     protected function isNormParagraph(\DOMElement $norm): bool

@@ -12,7 +12,9 @@ class ListItem
     {
         $this->nummer = $nummer;
 
-        $this->text = $text;
+        if ($text) {
+            $this->contentList[] = new Text($text);
+        }
     }
 
     public function setNummer(string $nummer): ListItem
