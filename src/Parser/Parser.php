@@ -79,6 +79,39 @@ class Parser implements ParserInterface
         return $paragraph;
     }
 
+    protected function parseAbsatz(\DOMNode $node): Absatz
+    {
+        $absatz = new Absatz();
+
+        preg_match('/\(([0-9a-zA-Z]*)\)\ (.*)/', $node->nodeValue, $matches);
+
+        if (count($matches) === 3) {
+            $absatz->setNummer($matches[1]);
+
+            foreach ($node->childNodes as $childNode) {
+                if ($childNode->nodeName === '#text') {
+                    $absatzText = new Text();
+
+                    $string = $childNode->nodeValue;
+                    $string = str_replace('('.$matches[1].') ', '', $string);
+                    $absatzText->setText($string);
+
+                    $absatz->addText($absatzText);
+                }
+
+                /*if ($subItem->nodeName === 'DL') {
+                    $absatzList = $this->parseList($subItem);
+
+                    $absatz->addList($absatzList);
+                }*/
+            }
+        } else {
+            $absatz->setTextString($node->nodeValue);
+        }
+
+        return $absatz;
+    }
+/*
     protected function parseList(\DOMElement $node): ItemList
     {
         $absatzList = new ItemList();
